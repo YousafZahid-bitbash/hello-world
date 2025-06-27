@@ -5,7 +5,7 @@ class TodoApp:
     def add_task(self, task):
         """Add a new task to the list"""
         self.tasks.append({"task": task, "completed": False})
-        print(f"Task added: ")
+        print(f"Task add")
     
     def view_tasks(self):
         """Display all tasks"""
