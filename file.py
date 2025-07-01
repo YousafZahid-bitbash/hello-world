@@ -10,13 +10,13 @@ class TodoApp:
     def view_tasks(self):
         """Display all tasks"""
         if not self.tasks:
-            print("No tasks found!")
+            print("No tasks found.")
             return
         
         print("\n=== TO-DO LIST ===")
         for i, task in enumerate(self.tasks, 1):
             status = "✓" if task["completed"] else "□"
-            print(f"{i}. [{status}] {task['task']}")
+            print(f"{i}. [ {status} ] {task['task']}")
         print()
     
     def mark_complete(self, task_index):
