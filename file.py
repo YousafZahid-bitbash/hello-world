@@ -1,10 +1,27 @@
+import json
+import os
+
 class TodoApp:
-    def __init__(self):
-        self.tasks = []
+    def __init__(self, filename='tasks.json'):
+        self.filename = filename
+        self.tasks = self.load_tasks()
+    
+    def load_tasks(self):
+        """Load tasks from the JSON file"""
+        if os.path.exists(self.filename):
+            with open(self.filename, 'r') as file:
+                return json.load(file)
+        return []
+    
+    def save_tasks(self):
+        """Save tasks to the JSON file"""
+        with open(self.filename, 'w') as file:
+            json.dump(self.tasks, file, indent=4)
     
     def add_task(self, task):
         """Add a new task to the list"""
         self.tasks.append({"task": task, "completed": False})
+        self.save_tasks()
         print(f"✅ Task successfully added: '{task}'")
     
     def view_tasks(self):
@@ -23,6 +40,7 @@ class TodoApp:
         """Mark a task as complete"""
         if 1 <= task_index <= len(self.tasks):
             self.tasks[task_index - 1]["completed"] = True
+            self.save_tasks()
             print(f"Task marked as complete: {self.tasks[task_index - 1]['task']}")
         else:
             print("Invalid task number!")
@@ -31,6 +49,7 @@ class TodoApp:
         """Delete a task"""
         if 1 <= task_index <= len(self.tasks):
             deleted_task = self.tasks.pop(task_index - 1)
+            self.save_tasks()
             print(f"Task deleted: {deleted_task['task']}")
         else:
             print("Invalid task number!")
