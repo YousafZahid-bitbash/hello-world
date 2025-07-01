@@ -27,7 +27,7 @@ class TodoApp:
     def view_tasks(self):
         """Display all tasks"""
         if not self.tasks:
-            print("No tasks found.")
+            print("noting found wow.")
             return
         
         print("\n=== TO-DO LIST ===")
