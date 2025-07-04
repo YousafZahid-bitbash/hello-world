@@ -1,17 +1,33 @@
+import json
+import os
+
 class TodoApp:
-    def __init__(self):
-        self.tasks = []
+    def __init__(self, filename='tasks.json'):
+        self.filename = filename
+        self.tasks = self.load_tasks()
     
-    def add_task(self, task, due_date=None):
-        """Add a new task to the list with an optional due date"""
-        self.tasks.append({"task": task, "completed": False, "due_date": due_date})
-        print(f"✅ Task successfully added: '{task}' with due date: '{due_date}'")
+    def load_tasks(self):
+        """Load tasks from the JSON file"""
+        if os.path.exists(self.filename):
+            with open(self.filename, 'r') as file:
+                return json.load(file)
+        return []
+    
+    def save_tasks(self):
+        """Save tasks to the JSON file"""
+        with open(self.filename, 'w') as file:
+            json.dump(self.tasks, file, indent=4)
+    
+    def add_task(self, task):
+        """Add a new task to the list"""
+        self.tasks.append({"task": task, "completed": False})
+        print(f"✅ Task successfully added: '{task}'")
     
     # BEGIN: view_tasks
     def view_tasks(self):
         """Display all tasks"""
         if not self.tasks:
-            print("No tasks available.")
+            print("No tasks found.")
             return
         for index, task in enumerate(self.tasks, start=1):
             status = "✅" if task["completed"] else "❌"
@@ -27,18 +43,17 @@ class TodoApp:
     #function to mark a task as complete
     def mark_complete(self, task_num):
         """Mark a task as complete"""
-        if 0 < task_num <= len(self.tasks):
-            self.tasks[task_num - 1]["completed"] = True
-            print(f"✅ Task {task_num} marked as complete.")
+        if 1 <= task_index <= len(self.tasks):
+            self.tasks[task_index - 1]["completed"] = True
+            print(f"Task marked as complete: {self.tasks[task_index - 1]['task']}")
         else:
             print("Invalid task number!")
     
-    #function to delete a task
-    def delete_task(self, task_num):
-        """Delete a task from the list"""
-        if 0 < task_num <= len(self.tasks):
-            removed_task = self.tasks.pop(task_num - 1)
-            print(f"✅ Task '{removed_task['task']}' deleted successfully.")
+    def delete_task(self, task_index):
+        """Delete a task"""
+        if 1 <= task_index <= len(self.tasks):
+            deleted_task = self.tasks.pop(task_index - 1)
+            print(f"Task deleted: {deleted_task['task']}")
         else:
             print("Invalid task number!")
 
