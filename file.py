@@ -2,48 +2,50 @@ class TodoApp:
     def __init__(self):
         self.tasks = []
     
-    def add_task(self, task):
-        """Add a new task to the list"""
-        self.tasks.append({"task": task, "completed": False})
-        print(f"✅ Task successfully added: '{task}'")
+    def add_task(self, task, due_date=None):
+        """Add a new task to the list with an optional due date"""
+        self.tasks.append({"task": task, "completed": False, "due_date": due_date})
+        print(f"✅ Task successfully added: '{task}' with due date: '{due_date}'")
     
+    # BEGIN: view_tasks
     def view_tasks(self):
         """Display all tasks"""
         if not self.tasks:
-            print("No tasks found.")
+            print("No tasks available.")
             return
-        
-        print("\n=== TO-DO LIST ===")
-        for i, task in enumerate(self.tasks, 1):
-            status = "✓" if task["completed"] else "□"
-            print(f"{i}. [ {status} ] {task['task']}")
-        print()
+        for index, task in enumerate(self.tasks, start=1):
+            status = "✅" if task["completed"] else "❌"
+            due_date = f" (Due: {task['due_date']})" if task['due_date'] else ""
+            print(f"{index}. {task['task']} [{status}]{due_date}")
+    # END: view_tasks
     
-    def mark_complete(self, task_index):
+    #function to sort tasks by due date
+    def sort_tasks_by_due_date(self):
+        """Sort tasks by due date"""
+        self.tasks.sort(key=lambda x: x['due_date'] if x['due_date'] else "")
+    
+    #function to mark a task as complete
+    def mark_complete(self, task_num):
         """Mark a task as complete"""
-        if 1 <= task_index <= len(self.tasks):
-            self.tasks[task_index - 1]["completed"] = True
-            print(f"Task marked as complete: {self.tasks[task_index - 1]['task']}")
+        if 0 < task_num <= len(self.tasks):
+            self.tasks[task_num - 1]["completed"] = True
+            print(f"✅ Task {task_num} marked as complete.")
         else:
             print("Invalid task number!")
     
-    def delete_task(self, task_index):
-        """Delete a task"""
-        if 1 <= task_index <= len(self.tasks):
-            deleted_task = self.tasks.pop(task_index - 1)
-            print(f"Task deleted: {deleted_task['task']}")
+    #function to delete a task
+    def delete_task(self, task_num):
+        """Delete a task from the list"""
+        if 0 < task_num <= len(self.tasks):
+            removed_task = self.tasks.pop(task_num - 1)
+            print(f"✅ Task '{removed_task['task']}' deleted successfully.")
         else:
             print("Invalid task number!")
+
+
     
-    def show_menu(self):
-        """Display the menu options"""
-        print("\n=== TO-DO APP MENU ===")
-        print("1. Add Task")
-        print("2. View Tasks")
-        print("3. Mark Task as Complete")
-        print("4. Delete Task")
-        print("5. Exit")
-        print("=====================")
+
+
 
 def main():
     todo_app = TodoApp()
