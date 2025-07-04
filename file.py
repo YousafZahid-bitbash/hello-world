@@ -21,6 +21,8 @@ class TodoApp:
     def add_task(self, task):
         """Add a new task to the list"""
         self.tasks.append({"task": task, "completed": False})
+        self.save_tasks()
+        # Save tasks after adding a new one
         print(f"✅ Task successfully added: '{task}'")
     
     # BEGIN: view_tasks
